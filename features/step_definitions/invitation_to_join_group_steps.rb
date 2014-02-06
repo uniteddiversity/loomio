@@ -238,3 +238,17 @@ end
 Then(/^I should not see the invitations field$/) do
   page.should_not have_css("#invitees")
 end
+
+When(/^I visit a discussion page$/) do
+  @discussion = create_discussion group: @group
+  visit discussion_path(@discussion)
+end
+
+When(/^I invite "(.*?)" to join the discussion$/) do |arg1|
+  fill_in "invitees", with: arg1
+  click_on 'Invite people'
+end
+
+Given(/^I am invited to join a discussion$/) do
+  pending # express the regexp above with the code you wish you had
+end

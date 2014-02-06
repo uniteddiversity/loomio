@@ -1,4 +1,5 @@
 Loomio::Application.routes.draw do
+
   slug_regex = /[a-z0-9\-\_]*/i
   ActiveAdmin.routes(self)
 
@@ -114,6 +115,9 @@ Loomio::Application.routes.draw do
 
   resources :discussions, path: 'd', only: [:new, :edit, :create] do
     get :activity_counts, on: :collection
+    scope module: :discussions do
+      resources :invitations, only: [:new, :create]
+    end
 
     member do
       post :update_description

@@ -1,3 +1,4 @@
+- invite_to_discussion ||= false
 - if @group.is_a_subgroup?
   %h3= t("invitation.by_email")
 .control-group
@@ -8,5 +9,7 @@
   %br
   = form.input :recipients, as: :hidden, input_html: { class: 'recipients' }
 .control-group
-  = form.input :message_body, label: false, as: :text, input_html: { value: t("invitation.body_editable", group: group.name) }, label: t("invitation.message_body")
-
+  - if invite_to_discussion == true
+    = form.input :message_body, label: false, as: :text, input_html: { value: t("invitation.body_editable_discussion", group: group.name) }, label: t("invitation.message_body")
+  - else
+    = form.input :message_body, label: false, as: :text, input_html: { value: t("invitation.body_editable", group: group.name) }, label: t("invitation.message_body")
