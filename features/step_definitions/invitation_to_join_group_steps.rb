@@ -36,7 +36,7 @@ Given(/^I am invited to join a group$/) do
   @group = FactoryGirl.create(:group)
   @group.add_admin! @group_admin
   @invite_people_form = InvitePeopleForm.new(recipients: ['jim@jam.com'], message_body: 'please click the invitation link below')
-  CreateInvitation.to_people_and_email_them(recipient_emails: @invite_people_form.recipients, message: @invite_people_form.message_body, group: @group, inviter: @group_admin)
+  CreateInvitation.to_group_and_email_people(recipient_emails: @invite_people_form.recipients, message: @invite_people_form.message_body, group: @group, inviter: @group_admin)
 end
 
 When(/^I accept my invitation via email$/) do
@@ -62,7 +62,7 @@ end
 Given(/^I am invited at "(.*?)" to join a group$/) do |arg1|
   @group = FactoryGirl.create(:group)
   @invite_people_form = InvitePeopleForm.new(recipients: [arg1], message_body: 'please click the invitation link below')
-  CreateInvitation.to_people_and_email_them(recipient_emails: @invite_people_form.recipients, message: @invite_people_form.message_body, group: @group, inviter: @group.admins.first)
+  CreateInvitation.to_group_and_email_people(recipient_emails: @invite_people_form.recipients, message: @invite_people_form.message_body, group: @group, inviter: @group.admins.first)
 end
 
 Then(/^I should be a member of the group$/) do

@@ -11,13 +11,19 @@ class CreateInvitation
     Invitation.create(args)
   end
 
+  def self.to_join_discussion(args)
+    args[:to_be_admin] = false
+    args[:intent] = 'join_discussion'
+    Invitation.create(args)
+  end
+
   def self.after_membership_request_approval(args)
     args[:to_be_admin] = false
     args[:intent] = 'join_group'
     Invitation.create(args)
   end
 
-  def self.to_people_and_email_them(recipient_emails: nil,
+  def self.to_group_and_email_people(recipient_emails: nil,
                                     message: nil,
                                     group: nil,
                                     inviter: nil)
@@ -26,6 +32,19 @@ class CreateInvitation
                                  group: group,
                                  inviter: inviter)
       InvitePeopleMailer.delay.to_join_group(invitation, inviter, message)
+    end
+    recipient_emails.size
+  end
+
+  def self.to_discussion_and_email_people(recipient_emails: nil,
+                                    message: nil,
+                                    group: nil,
+                                    inviter: nil)
+    recipient_emails.each do |recipient_email|
+      invitation = to_join_discussion(recipient_email: recipient_email,
+                                 discussion: discussion,
+                                 inviter: inviter)
+      InvitePeopleMailer.delay.to_join_discussion(invitation, inviter, message)
     end
     recipient_emails.size
   end

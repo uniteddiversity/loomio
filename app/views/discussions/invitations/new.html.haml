@@ -1,5 +1,5 @@
 = render 'discussions/invitations/title', discussion: @discussion, group: @group
-= simple_form_for(@invite_people_form, url: group_invitations_path(@group, discussion: @discussion), method: :post) do |f|
+= simple_form_for(@invite_people_form, url: discussion_invitations_path(@discussion), method: :post) do |f|
   .row#invitations-header
     %h1= t("invitation.invite_to_discussion")
     .invite-to-discussion-info
@@ -7,7 +7,7 @@
   .row#invitation-options
     - if can? :invite_outsiders, @group
       .span6.invite-by-email
-        = render 'groups/invite_users', form: f, group: @group, invite_to_discussion: true
+        = render 'groups/invite_users', form: f, group: @group, discussion: @discussion
         = @group.invitations_remaining
         = t :invitations_remaining
     - if @group.is_a_subgroup?

@@ -14,7 +14,7 @@ class Groups::InvitationsController < GroupBaseController
                                          inviter: current_user)
 
 
-    CreateInvitation.to_people_and_email_them(recipient_emails: @invite_people_form.emails_to_invite,
+    CreateInvitation.to_group_and_email_people(recipient_emails: @invite_people_form.emails_to_invite,
                                               message: @invite_people_form.message_body,
                                               group: @group,
                                               inviter: current_user)

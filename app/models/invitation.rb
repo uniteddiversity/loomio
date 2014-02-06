@@ -14,7 +14,7 @@ class Invitation < ActiveRecord::Base
   belongs_to :canceller, class_name: User
 
   validates_presence_of :group, :intent
-  validates_inclusion_of :intent, :in => ['start_group', 'join_group']
+  validates_inclusion_of :intent, :in => ['start_group', 'join_group', 'join_discussion']
   before_save :ensure_token_is_present
 
   scope :not_cancelled,  -> { where(cancelled_at: nil) }
@@ -56,6 +56,10 @@ class Invitation < ActiveRecord::Base
 
   def to_join_group?
     intent == 'join_group'
+  end
+
+  def to_join_discussion?
+    intent == 'join_discussion'
   end
 
   private
