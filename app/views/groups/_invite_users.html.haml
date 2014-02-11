@@ -8,7 +8,7 @@
   %br
   = form.input :recipients, as: :hidden, input_html: { class: 'recipients' }
 .control-group
-  - if discussion.present?
+  - if @discussion.present?
     = form.input :message_body, label: false, as: :text, input_html: { value: t("invitation.body_editable_discussion", group: group.name) }, label: t("invitation.message_body")
   - else
     = form.input :message_body, label: false, as: :text, input_html: { value: t("invitation.body_editable", group: group.name) }, label: t("invitation.message_body")

@@ -8,19 +8,17 @@ class MakeInvitationsPolymorphic < ActiveRecord::Migration
     ActiveRecord::Base.record_timestamps = false
     begin
       puts "Updating #{Invitation.last.id} Invitation records to polymorphic"
+
+      Invitation.update_all(invitable_type: 'Group')
+
       Invitation.find_each do |i|
         p i.id if i.id % 100 == 0
 
-        i.invitable_type = 'group'
-        i.invitable_id = i.group_id
-        i.save
+        i.update_attribute(:invitable_id, i.group_id)
       end
     ensure
       ActiveRecord::Base.record_timestamps = true
     end
-
-    # change_column_null(:invitations, :invitable_id, false)
-    # change_column_null(:invitations, :invitable_type, false)
 
     remove_column :invitations, :group_id
   end
@@ -42,9 +40,8 @@ class MakeInvitationsPolymorphic < ActiveRecord::Migration
       ActiveRecord::Base.record_timestamps = true
     end
 
-    change_column_null(:invitations, :group_id, false)
-
-    # remove_column :invitations, :invitable_id
-    # remove_column :invitations, :invitable_type
+    change_table :invitations do |t|
+      t.remove_references :invitable, polymorphic: true
+    end
   end
 end

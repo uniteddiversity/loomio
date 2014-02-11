@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140107211331) do
+ActiveRecord::Schema.define(:version => 20140206023957) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -182,9 +182,9 @@ ActiveRecord::Schema.define(:version => 20140107211331) do
     t.boolean  "is_deleted",      :default => false, :null => false
     t.integer  "comments_count",  :default => 0,     :null => false
     t.integer  "items_count",     :default => 0,     :null => false
-    t.string   "key"
     t.datetime "archived_at"
     t.boolean  "private"
+    t.string   "key"
   end
 
   add_index "discussions", ["author_id"], :name => "index_discussions_on_author_id"
@@ -346,7 +346,6 @@ ActiveRecord::Schema.define(:version => 20140107211331) do
   create_table "invitations", :force => true do |t|
     t.string   "recipient_email",                    :null => false
     t.integer  "inviter_id",                         :null => false
-    t.integer  "group_id",                           :null => false
     t.boolean  "to_be_admin",     :default => false, :null => false
     t.string   "token",                              :null => false
     t.integer  "accepted_by_id"
@@ -355,9 +354,10 @@ ActiveRecord::Schema.define(:version => 20140107211331) do
     t.integer  "canceller_id"
     t.datetime "cancelled_at"
     t.string   "recipient_name"
+    t.integer  "invitable_id"
+    t.string   "invitable_type"
   end
 
-  add_index "invitations", ["group_id"], :name => "index_invitations_on_group_id"
   add_index "invitations", ["token"], :name => "index_invitations_on_token"
 
   create_table "membership_requests", :force => true do |t|

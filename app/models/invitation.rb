@@ -10,7 +10,7 @@ class Invitation < ActiveRecord::Base
   friendly_id :token
   belongs_to :inviter, class_name: User
   belongs_to :accepted_by, class_name: User
-  belongs_to :group
+  belongs_to :invitable, polymorphic: true
   belongs_to :canceller, class_name: User
 
   validates_presence_of :group, :intent
