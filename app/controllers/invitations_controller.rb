@@ -39,7 +39,7 @@ class InvitationsController < ApplicationController
 
     if current_user
       AcceptInvitation.and_grant_access!(@invitation, current_user)
-      redirect_to group_or_discussion_path
+      redirect_to @invitation.invitable
     else
       save_invitation_token_to_session
       redirect_to new_user_registration_path
@@ -47,17 +47,6 @@ class InvitationsController < ApplicationController
   end
 
   private
-
-  def group_or_discussion_path
-    case @invitation.invitable_type
-    when 'Group'
-      join_or_setup_group_path
-    when 'Discussion'
-      discussion_path(@invitation.invitable)
-    else
-      raise ActiveRecord::RecordNotFound
-    end
-  end
 
   def join_or_setup_group_path
     group = @invitation.invitable
