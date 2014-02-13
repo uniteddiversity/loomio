@@ -16,7 +16,7 @@ class Groups::InvitationsController < GroupBaseController
 
     CreateInvitation.to_group_and_email_people(recipient_emails: @invite_people_form.emails_to_invite,
                                               message: @invite_people_form.message_body,
-                                              group: @group,
+                                              invitable: @group,
                                               inviter: current_user)
 
     set_flash_message

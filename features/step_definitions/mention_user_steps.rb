@@ -1,5 +1,5 @@
 Given(/^"(.*?)" has been invited to the group but has not accepted$/) do |recipient_email|
-  args = { recipient_email: recipient_email, inviter: @user, group: @group }
+  args = { recipient_email: recipient_email, inviter: @user, invitable: @group }
   CreateInvitation.to_join_group(args)
 end
 

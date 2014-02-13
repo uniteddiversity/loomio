@@ -9,7 +9,7 @@ describe Invitation do
                                     recipient_name: 'Joinky',
                                     intent: 'join_group',
                                     inviter: admin_user,
-                                    group: group)
+                                    invitable: group)
   end
 
   describe 'create' do
@@ -21,7 +21,7 @@ describe Invitation do
   describe 'accepted?' do
     subject do
       @invitation.accepted?
-    end 
+    end
 
     context 'accepted_by present' do
       before do

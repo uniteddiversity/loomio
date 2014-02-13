@@ -8,7 +8,7 @@ class ManageMembershipRequests
       invitation = CreateInvitation.after_membership_request_approval(
                         recipient_email: membership_request.email,
                         inviter: responder,
-                        group: membership_request.group)
+                        invitable: membership_request.group)
       InvitePeopleMailer.delay.after_membership_request_approval(invitation, responder.email,'')
     else
       group = membership_request.group

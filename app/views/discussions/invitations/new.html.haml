@@ -1,4 +1,14 @@
-= render 'discussions/invitations/title', discussion: @discussion, group: @group
+.group-title
+  %h1.home-title
+    = link_to t(:home), "/"
+    = content_tag :span, "\u25B6", class: 'name-separator'
+    - if @group.is_a_subgroup?
+      = link_to @group.parent.name, @group.parent
+      = content_tag :span, "\u25B6", class: 'name-separator'
+    = link_to @group.name, @group
+    = content_tag :span, "\u25B6", class: 'name-separator'
+    = link_to @discussion.title, @discussion
+    = render 'groups/privacy_dropdown', group: @group
 = simple_form_for(@invite_people_form, url: discussion_invitations_path(@discussion), method: :post) do |f|
   .row#invitations-header
     %h1= t("invitation.invite_to_discussion")

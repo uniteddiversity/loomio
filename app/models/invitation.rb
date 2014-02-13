@@ -13,7 +13,8 @@ class Invitation < ActiveRecord::Base
   belongs_to :invitable, polymorphic: true
   belongs_to :canceller, class_name: User
 
-  validates_presence_of :group, :intent
+  validates_presence_of :invitable, :intent
+  validates_inclusion_of :invitable_type, :in => ['Group', 'Discussion']
   validates_inclusion_of :intent, :in => ['start_group', 'join_group', 'join_discussion']
   before_save :ensure_token_is_present
 
@@ -28,12 +29,28 @@ class Invitation < ActiveRecord::Base
     inviter.name
   end
 
-  def group_name
-    group.name
+  def group
+    case invitable_type
+    when 'Group'
+      invitable
+    when 'Discussion'
+      invitable.group
+    end
+  end
+
+  def invitable_name
+    case invitable_type
+    when 'Group'
+      invitable.name
+    when 'Discussion'
+      invitable.title
+    end
   end
 
   def group_request_admin_name
-    group.group_request.admin_name
+    if invitable == 'Group'
+      invitable.group_request.admin_name
+    end
   end
 
   def cancel!(args)

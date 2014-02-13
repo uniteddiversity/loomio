@@ -6,7 +6,8 @@ describe InvitationsController do
 
     let(:group) { stub_model(Group, key: 'AaBC1256', full_name: "Gertrude's Emportium") }
     let(:invitation) {double(:invitation,
-                           :group => group,
+                           :invitable => group,
+                           :invitable_type => 'Group',
                            :recipient_email => 'jim@bob.com',
                            :intent => 'join_group',
                            :cancelled? => false,

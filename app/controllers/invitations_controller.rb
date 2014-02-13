@@ -13,7 +13,7 @@ class InvitationsController < ApplicationController
 
   rescue_from Invitation::InvitationAlreadyUsed do
     if current_user and @invitation.accepted_by == current_user
-      redirect_to @invitation.group
+      redirect_to @invitation.invitable
     else
       render 'application/display_error',
         locals: { message: t(:'invitation.invitation_already_used') }
@@ -39,7 +39,7 @@ class InvitationsController < ApplicationController
 
     if current_user
       AcceptInvitation.and_grant_access!(@invitation, current_user)
-      redirect_to_group
+      redirect_to group_or_discussion_path
     else
       save_invitation_token_to_session
       redirect_to new_user_registration_path
@@ -48,11 +48,23 @@ class InvitationsController < ApplicationController
 
   private
 
-  def redirect_to_group
-    if @invitation.group.admins.include? current_user
-      redirect_to setup_group_path(@invitation.group)
+  def group_or_discussion_path
+    case @invitation.invitable_type
+    when 'Group'
+      join_or_setup_group_path
+    when 'Discussion'
+      discussion_path(@invitation.invitable)
     else
-      redirect_to @invitation.group
+      raise ActiveRecord::RecordNotFound
+    end
+  end
+
+  def join_or_setup_group_path
+    group = @invitation.invitable
+    if group.admins.include? current_user
+      setup_group_path(group)
+    else
+      group_path(group)
     end
   end
 end

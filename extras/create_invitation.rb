@@ -25,11 +25,11 @@ class CreateInvitation
 
   def self.to_group_and_email_people(recipient_emails: nil,
                                     message: nil,
-                                    group: nil,
+                                    invitable: nil,
                                     inviter: nil)
     recipient_emails.each do |recipient_email|
       invitation = to_join_group(recipient_email: recipient_email,
-                                 group: group,
+                                 invitable: invitable,
                                  inviter: inviter)
       InvitePeopleMailer.delay.to_join_group(invitation, inviter, message)
     end
@@ -38,11 +38,11 @@ class CreateInvitation
 
   def self.to_discussion_and_email_people(recipient_emails: nil,
                                     message: nil,
-                                    group: nil,
+                                    invitable: nil,
                                     inviter: nil)
     recipient_emails.each do |recipient_email|
       invitation = to_join_discussion(recipient_email: recipient_email,
-                                 discussion: discussion,
+                                 invitable: invitable,
                                  inviter: inviter)
       InvitePeopleMailer.delay.to_join_discussion(invitation, inviter, message)
     end

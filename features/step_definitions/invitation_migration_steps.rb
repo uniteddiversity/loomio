@@ -24,7 +24,7 @@ end
 Then(/^there should be an invitation with the same token, group and inviter$/) do
   @invitation = Invitation.find_by_token @invitation_token
   @invitation.inviter.should == @inviter
-  @invitation.group.should == @group
+  @invitation.invitable.should == @group
   @invitation.token.should == @invitation_token
 end
 

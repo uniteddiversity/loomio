@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'CreateInvitation' do
-  
+
   context 'to_start_a_group' do
     let(:group) {FactoryGirl.create(:group)}
     let(:admin_user) {FactoryGirl.create(:admin_user)}
@@ -10,7 +10,7 @@ describe 'CreateInvitation' do
       @invitation = CreateInvitation.to_start_group(
         inviter: admin_user,
         recipient_email: 'jon@lemmon.com',
-        group: group)
+        invitable: group)
     end
 
     it 'has a unique token' do
@@ -22,7 +22,7 @@ describe 'CreateInvitation' do
     end
 
     it 'specifies the group' do
-      @invitation.group.should == group
+      @invitation.invitable.should == group
     end
 
     it 'is to join as an admin' do
@@ -39,7 +39,7 @@ describe 'CreateInvitation' do
       @invitation = CreateInvitation.to_join_group(
         inviter: admin_user,
         recipient_email: 'jon@lemmon.com',
-        group: group)
+        invitable: group)
     end
     it 'has a unique token' do
       @invitation.token.length.should > 10
@@ -50,7 +50,7 @@ describe 'CreateInvitation' do
     end
 
     it 'specifies the group' do
-      @invitation.group.should == group
+      @invitation.invitable.should == group
     end
 
     it 'is to join as an admin' do
