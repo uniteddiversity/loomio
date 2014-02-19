@@ -1,6 +1,7 @@
-.logged-in-navigation
+.logged-in-navigation.js-campaign
   - if user_signed_in?
-    .navbar.navbar-inverse.navbar-fixed-top
+    = render 'campaigns/crowdfunding'
+    .navbar.navbar-inverse.navbar-fixed-top.js-campaign
       .navbar-inner
         .container
           %ul.nav-bar-list.clearfix

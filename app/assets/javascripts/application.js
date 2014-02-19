@@ -47,3 +47,4 @@
 //= require searches
 //= require attachments
 //= require subscriptions
+//= require campaigns

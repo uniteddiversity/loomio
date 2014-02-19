@@ -13,6 +13,7 @@
     - analytics_scope do
       = render 'google_tag_manager'
     .container.home-flash
+      = render 'campaigns/crowdfunding'
       = render 'flash_messages', :flash => flash
     - if controller_name == 'pages'
       = render 'github_fork_us'
