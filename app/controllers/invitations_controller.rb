@@ -1,5 +1,8 @@
 class InvitationsController < ApplicationController
   include InvitationsHelper
+  # before_filter :require_current_user_can_invite_people
+  before_filter :load_invitable, only: [:new, :create]
+  before_filter :ensure_invitations_available, only: [:new, :create]
 
   rescue_from ActiveRecord::RecordNotFound do
     render 'application/display_error',
@@ -20,14 +23,29 @@ class InvitationsController < ApplicationController
     end
   end
 
+  def new
+    ensure_invitations_available
+    @invite_people_form = InvitePeopleForm.new
+    load_decorated_group
+  end
+
+  def create
+    @invite_people_form = InvitePeopleForm.new(params[:invite_people_form])
+    MembershipService.add_users_to_group(users: @invite_people_form.members_to_add,
+                                         group: @group,
+                                         inviter: current_user)
+    InvitationService.email_invitations(recipient_emails: @invite_people_form.emails_to_invite,
+                                       message: @invite_people_form.message_body,
+                                       invitable: @invitable,
+                                       inviter: current_user)
+
+    set_flash_message
+    redirect_to @invitable
+  end
 
   def show
     clear_invitation_token_from_session
-    @invitation = Invitation.find_by_token(params[:id])
-
-    if @invitation.nil?
-      raise ActiveRecord::RecordNotFound
-    end
+    @invitation = Invitation.find_by_token!(params[:id])
 
     if @invitation.cancelled?
       raise Invitation::InvitationCancelled
@@ -46,7 +64,61 @@ class InvitationsController < ApplicationController
     end
   end
 
+  def index
+    @pending_invitations = @group.pending_invitations
+    load_decorated_group
+  end
+
+  def destroy
+    @group = Group.find_by_key!(params[:group_id])
+    @invitation = @group.pending_invitations.find_by_token!(params[:id])
+    @invitation.cancel!(canceller: current_user)
+    redirect_to group_memberships_path(@group), notice: "Invitation to #{@invitation.recipient_email} cancelled"
+  end
+
   private
+
+  def ensure_invitations_available
+    unless @group.invitations_remaining > 0
+      render 'no_invitations_left'
+    end
+  end
+
+  def load_invitable
+    if params[:group_id].present?
+      @group = Group.find_by_key!(params[:group_id])
+      @invitable = @group
+    elsif params[:discussion_id].present?
+      @discussion = Discussion.find_by_key!(params[:discussion_id])
+      @group = @discussion.group
+      @invitable = @discussion
+    end
+  end
+
+  def load_decorated_group
+    @group
+  end
+
+  def set_flash_message
+    unless @invite_people_form.emails_to_invite.empty?
+      invitations_sent = t(:'notice.invitations.sent', count: @invite_people_form.emails_to_invite.size)
+    end
+
+    unless @invite_people_form.members_to_add.empty?
+      members_added = t(:'notice.invitations.auto_added', count: @invite_people_form.members_to_add.size)
+    end
+
+    # expected output: 6 people invitations sent, 10 people added to group
+    message = [invitations_sent, members_added].compact.join(", ")
+    flash[:notice] = message
+  end
+
+  # def require_current_user_can_invite_people
+  #   unless can? :invite_people, group
+  #     flash[:error] = "You are not able to invite people to this group"
+  #     redirect_to group
+  #   end
+  # end
 
   def join_or_setup_group_path
     group = @invitation.invitable

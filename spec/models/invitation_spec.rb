@@ -55,4 +55,55 @@ describe Invitation do
       @invitation.should be_cancelled
     end
   end
+
+  context 'to_start_a_group' do
+
+    before do
+      @invitation = Invitation.to_start_group(
+        inviter: admin_user,
+        recipient_email: 'jon@lemmon.com',
+        invitable: group)
+    end
+
+    it 'has a unique token' do
+      @invitation.token.length.should > 10
+    end
+
+    it 'specifies the recpient email' do
+      @invitation.recipient_email.should == 'jon@lemmon.com'
+    end
+
+    it 'specifies the group' do
+      @invitation.invitable.should == group
+    end
+
+    it 'is to join as an admin' do
+      @invitation.to_be_admin?.should be_true
+    end
+  end
+
+  context 'to_join_group' do
+
+    before do
+      @invitation = Invitation.to_join_group(
+        inviter: admin_user,
+        recipient_email: 'jon@lemmon.com',
+        invitable: group)
+    end
+    it 'has a unique token' do
+      @invitation.token.length.should > 10
+    end
+
+    it 'specifies the recpient email' do
+      @invitation.recipient_email.should == 'jon@lemmon.com'
+    end
+
+    it 'specifies the group' do
+      @invitation.invitable.should == group
+    end
+
+    it 'is to join as an admin' do
+      @invitation.to_be_admin?.should be_false
+    end
+  end
 end

@@ -79,6 +79,34 @@ class Invitation < ActiveRecord::Base
     intent == 'join_discussion'
   end
 
+  def invitations_remaining
+    max_size - memberships_count - pending_invitations.count
+  end
+
+  def self.to_start_group(args)
+    args[:to_be_admin] = true
+    args[:intent] = 'start_group'
+    create(args)
+  end
+
+  def self.to_join_group(args)
+    args[:to_be_admin] = false
+    args[:intent] = 'join_group'
+    create(args)
+  end
+
+  def self.to_join_discussion(args)
+    args[:to_be_admin] = false
+    args[:intent] = 'join_discussion'
+    create(args)
+  end
+
+  def self.after_membership_request_approval(args)
+    args[:to_be_admin] = false
+    args[:intent] = 'join_group'
+    Invitation.create(args)
+  end
+
   private
   def ensure_token_is_present
     unless self.token.present?

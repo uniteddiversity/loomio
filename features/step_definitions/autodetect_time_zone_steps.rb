@@ -24,7 +24,7 @@ Given(/^I am invited to join a Loomio Group$/) do
   @user = FactoryGirl.create(:user)
   @group = FactoryGirl.create(:group)
   @group.add_admin!(@user)
-  @invitation = CreateInvitation.to_join_group(invitable: @group,
+  @invitation = Invitation.to_join_group(invitable: @group,
                                                inviter: @user,
                                                recipient_email: 'me@email.com')
 end

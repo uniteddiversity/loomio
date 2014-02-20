@@ -32,7 +32,7 @@ When(/^I load a devise invitation link$/) do
   @inviter = FactoryGirl.create :user
   @group = FactoryGirl.create :group
 
-  @invitation = CreateInvitation.to_join_group(recipient_email: 'dog@cats.com',
+  @invitation = Invitation.to_join_group(recipient_email: 'dog@cats.com',
                                               inviter: @inviter,
                                               group: @group)
   visit "/users/invitation/accept?invitation_token=#{@invitation.token}"
