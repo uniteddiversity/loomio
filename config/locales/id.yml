@@ -47,9 +47,7 @@ id:
     permission_to_invite: "Anda tidak memiliki izin untuk mengundang anggota baru."
     position_not_updated: "Tidak dapat memperbarui pendapat."
     settings_not_updated: "Setelan Anda tidak terperbarui."
-    group_request_already_verified: "Maaf! Tautan verifikasi yang Anda gunakan telah dikonfirmasi. Apabila Anda belum mendengar kabar dari kami dalam 48 jam, hubungi: contact@loomio.org"
     group_request_already_accepted: "Maaf! Undangan ini salah atau telah digunakan."
-    group_request_contribution: "Silakan pilih ketegori. Ini bukanlah komitmen untuk membayar, namun menjadi informasi untuk membantu kami memperbaiki model yang ada. Terima kasih!"
     group_request_invalid_token: "Maaf! Ini adalah token yang salah"
     group_private_or_not_found: "Kelompok tidak ditemukan. \n\nKelompok ini mungkin tertutup. Apabila seseorang memberikan tautan ini, minta mereka untuk mengundang Anda ke dalam kelompok."
     group_already_setup: "Kelompok yang ingin Anda buat telah ada."
@@ -74,13 +72,10 @@ id:
     comment_deleted: "Komentar dihapus."
     invitations:
       auto_added:
-        one: "1 anggota ditambahkan"
         other: "%{count} anggota ditambahkan"
       existing_member:
-        one: "1 anggota telah masuk ke dalam kelompok"
         other: "%{count} anggota telah masuk ke dalam kelompok"
       sent:
-        one: "1 undangan telah dikirim"
         other: "%{count} undangan telah dikirim"
       auto_added_and_sent: "%{auto_added_text} dan %{sent_text}"
   views:
@@ -117,38 +112,25 @@ id:
     proposal_deleted: "Usulan dihapus."
   datetime:
     distance_in_words:
-      less_than_x_seconds:
-        one: "1 detik"
-        other: "%{count} detik"
       x_seconds:
-        one: "1 detik"
         other: "%{count} detik"
       less_than_x_minutes:
-        one: "1 menit"
         other: "%{count} menit"
       x_minutes:
-        one: "1 menit"
         other: "%{count} menit"
       about_x_hours:
-        one: "1 jam"
         other: "%{count} jam"
       x_days:
-        one: "1 hari"
         other: "%{count} hari"
       about_x_months:
-        one: "1 bulan"
         other: "%{count} bulan"
       x_months:
-        one: "1 bulan"
         other: "%{count} bulan"
       about_x_years:
-        one: "1 tahun"
         other: "%{count} tahun"
       over_x_years:
-        one: "1 tahun"
         other: "%{count} tahun"
       almost_x_years:
-        one: "1 tahun"
         other: "%{count} tahun"
   footer:
     about: 'Tentang'
@@ -207,14 +189,12 @@ id:
   setup_step_3: "Undang teman ke dalam kelompok"
   invite_people: "Undang teman"
   no_invitations_button: "Undangan telah habis"
-  pending_invitations: 'Undangan tertunda'
   number_pending: '%{pending} tertunda'
   and_number_pending: 'dan %{pending} tertunda'
   edit_memberships: 'Ubah keanggotaan'
   add_new_member: "Tambah anggota baru"
   invite_members_to_group: "Undang anggota ke %{which_group}"
   remaining_invites: "undangan yang ada"
-  need_more_invites_html: "Butuh lebih? Loomio masih dalam bentuk beta tertutup, yang berarti masih dalam pengembangan dan memiliki dukungan pengguna yang terbatas. Apabila Anda ingin memperbesar kelompok Anda %{href}."
   get_in_touch_link: "hubungi"
   email_members_in_group: "Kirim surel kepada anggota %{which_group}"
   subject_error: "Masukkan perihal"
@@ -599,7 +579,6 @@ id:
         privacy_public_header: "Terbuka"
         privacy_public_description: "Semua orang dapat melihat diskusi ini"
         privacy_private_header: "Tertutup"
-        privacy_private_description: "Hanya anggota %{group} dapat melihat diskusi ini"
         privacy_hidden_description: "Seluruh diskusi pada kelompok tersembunyi adalah tertutup."
         of: "dari"
         of_no_group: "dari kelompok ini"
@@ -725,22 +704,6 @@ id:
       subject: "%{member} mengundang Anda untuk bergabung ke dalam %{group_name} di Loomio"
     to_start_group:
       subject: "Buat kelompok Loomio Anda yang baru: %{group_name}"
-    trial_expiry:
-      header: "%{group_name}: Masa percobaan Loomio hampir habis."
-      hi: "Halo,"
-      intro_html: |
-        Masa percobaan Anda akan habis dalam 5 hari. Kami harap Anda menikmati layanan Loomio.
-        <p>Saat masa percobaan berakhir, Anda harus memasukkan detail pembayaran agar kelompok Anda dapat tetap menggunakan Loomio.</p>
-        <p><a href=''>Klik di sini</a> untuk mengurus pembayaran.</p>
-        <p>Apabila Anda memiliki pertanyaan atau bantuan yang diperlukan agar tujuan kelompok Anda tercapai melalui Loomio, silakan hubungi kami.</p>
-    trial_follow_up:
-      header: "%{group_name}: Bagaimana penggunaan Loomio Anda?"
-      hi: "Halo,"
-      intro_html: |
-        Masa percobaan Anda sudah separuh jalan. Kami harap Anda menikmati layanan Loomio! Apabila Anda membutuhkan tips untuk menggunakan Loomio sebaik mungkin, <a href='/help#getting-the-most-out-of-Loomio'>silakan lihat di sini.</a>
-        <p>Anda harus memasukkan detail pembayaran sebelum akhir masa percobaan untuk tetap menggunakan Loomio.</p>
-        <p><a href=''>Klik di sini</a> untuk mengurus pembayaran.</p>
-        <p>Apabila Anda memiliki pertanyaan atau bantuan yang diperlukan agar tujuan kelompok Anda tercapai melalui Loomio, silakan hubungi kami.</p>
     verification:
       header: "Anda hampir selesai!"
       intro: "Klik pranala verifikasi untuk menyelesaikan permintaan Anda:"
@@ -750,7 +713,6 @@ id:
   approve: "Setuju"
   author: "Penulis"
   back: "Kembali"
-  by: "oleh"
   cancel: "Batal"
   change: "Ganti"
   change_language: "Klik di sini untuk menggunakan Loomio dalam bahasa %{language}"
@@ -784,7 +746,6 @@ id:
   password: "Kata sandi"
   pricing: 'Harga'
   prev: "Sebelumnya"
-  translate: "Bantu terjemahkan Loomio!"
   options: "Pilihan"
   other: "Lainnya"
   ok_got_it: "Oke, mengerti!"
@@ -801,6 +762,7 @@ id:
   subject: "Perihal"
   terms_of_service_html: "Dengan menekan %{button_text}, Anda setuju dengan <a href='%{link_path}' target='_blank'>Ketentuan layanan</a> Loomio"
   thanks: "Terima kasih!"
+  translate: "Bantu terjemahkan Loomio!"
   unlike: "Tidak sukai"
   until_close: "hingga ditutup"
   update: "Perbarui"
