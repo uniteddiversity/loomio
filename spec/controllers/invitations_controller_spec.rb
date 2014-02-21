@@ -10,20 +10,17 @@ describe InvitationsController do
   describe 'destroy' do
     let(:invitation){double(:invitation,
                             recipient_email: 'jim@jam.com',
-                            cancel!: => true)}
+                            cancel!: true,
+                            group: @group)}
 
     before do
       sign_in @user
-      Group.stub_chain(:published, :find_by_key!).and_return(@group)
-      @group.stub_chain(:pending_invitations, :find).and_return(invitation)
+      Invitation.stub(:find_by_token!).and_return(invitation)
     end
 
     it 'cancels the invitation' do
-      invitation.should_receive(:cancel!).with({:canceller => @user})
-      delete :destroy, group_id: @group.key
-    end
-
-    it 'redirects to group_memberships_path with flash notice' do
+      controller.should_receive(:authorize!).with(:cancel, invitation)
+      invitation.should_receive(:cancel!).with(canceller: @user)
       delete :destroy, group_id: @group.key
       response.should redirect_to group_memberships_path(@group)
     end

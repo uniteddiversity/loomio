@@ -35,9 +35,9 @@ class InvitationsController < ApplicationController
                                          group: @group,
                                          inviter: current_user)
     InvitationService.email_invitations(recipient_emails: @invite_people_form.emails_to_invite,
-                                       message: @invite_people_form.message_body,
-                                       invitable: @invitable,
-                                       inviter: current_user)
+                                        message: @invite_people_form.message_body,
+                                        invitable: @invitable,
+                                        inviter: current_user)
 
     set_flash_message
     redirect_to @invitable
@@ -70,10 +70,13 @@ class InvitationsController < ApplicationController
   end
 
   def destroy
-    @group = Group.find_by_key!(params[:group_id])
-    @invitation = @group.pending_invitations.find_by_token!(params[:id])
+    @invitation = Invitation.find_by_token!(params[:id])
+
+    authorize! :cancel, @invitation
     @invitation.cancel!(canceller: current_user)
-    redirect_to group_memberships_path(@group), notice: "Invitation to #{@invitation.recipient_email} cancelled"
+
+    redirect_to group_memberships_path(@invitation.group),
+                notice: "Invitation to #{@invitation.recipient_email} cancelled"
   end
 
   private

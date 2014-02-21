@@ -10,7 +10,13 @@ describe "User abilities" do
   let(:ability) { Ability.new(user) }
   subject { ability }
 
-  it { should be_able_to(:create, group) }
+  let(:own_invitation) { Invitation.to_join_group(recipient_email: "h@h.com",
+                                                  invitable: group,
+                                                  inviter: user) }
+  let(:other_members_invitation) { Invitation.to_join_group(recipient_email: "h@h.com",
+                                                            invitable: group,
+                                                            inviter: other_user) }
+  it { should     be_able_to(:create, group) }
 
   context "member of a group" do
     let(:group) { create(:group) }
@@ -33,50 +39,51 @@ describe "User abilities" do
       @other_membership = group.add_member!(other_user)
     end
 
-    it { should be_able_to(:create, subgroup) }
-    it { should be_able_to(:show, group) }
+    it { should     be_able_to(:create, subgroup) }
+    it { should     be_able_to(:show, group) }
     it { should_not be_able_to(:update, group) }
     it { should_not be_able_to(:email_members, group) }
-    it { should be_able_to(:add_subgroup, group) }
-    it { should be_able_to(:create, subgroup) }
+    it { should     be_able_to(:add_subgroup, group) }
+    it { should     be_able_to(:create, subgroup) }
     it { should_not be_able_to(:create, subgroup_for_another_group) }
     it { should_not be_able_to(:view_payment_details, group) }
     it { should_not be_able_to(:choose_subscription_plan, group) }
-    it { should be_able_to(:new_proposal, discussion) }
-    it { should be_able_to(:add_comment, discussion) }
-    it { should be_able_to(:update_description, discussion) }
-    it { should be_able_to(:edit_description, group) }
-    it { should be_able_to(:show_description_history, discussion) }
-    it { should be_able_to(:preview_version, discussion) }
-    it { should be_able_to(:update_version, discussion) }
+    it { should     be_able_to(:new_proposal, discussion) }
+    it { should     be_able_to(:add_comment, discussion) }
+    it { should     be_able_to(:update_description, discussion) }
+    it { should     be_able_to(:edit_description, group) }
+    it { should     be_able_to(:show_description_history, discussion) }
+    it { should     be_able_to(:preview_version, discussion) }
+    it { should     be_able_to(:update_version, discussion) }
     it { should_not be_able_to(:move, discussion) }
     it { should_not be_able_to(:update, discussion) }
-    it { should be_able_to(:update, user_discussion) }
-    it { should be_able_to(:show, Discussion) }
-    it { should be_able_to(:unfollow, Discussion) }
-    it { should be_able_to(:destroy, user_comment) }
+    it { should     be_able_to(:update, user_discussion) }
+    it { should     be_able_to(:show, Discussion) }
+    it { should     be_able_to(:unfollow, Discussion) }
+    it { should     be_able_to(:destroy, user_comment) }
     it { should_not be_able_to(:destroy, discussion) }
     it { should_not be_able_to(:destroy, another_user_comment) }
-    it { should be_able_to(:like_comments, discussion) }
-    it { should be_able_to(:create, new_discussion) }
+    it { should     be_able_to(:like_comments, discussion) }
+    it { should     be_able_to(:create, new_discussion) }
     it { should_not be_able_to(:make_admin, @membership) }
     it { should_not be_able_to(:make_admin, @other_membership) }
     it { should_not be_able_to(:destroy, @other_membership) }
-    it { should be_able_to(:destroy, @membership) }
-    it { should be_able_to(:create, new_motion) }
-    it { should be_able_to(:close, user_motion) }
-    it { should be_able_to(:create_outcome, user_motion) }
-    it { should be_able_to(:edit_close_date, user_motion) }
-    it { should be_able_to(:destroy, user_motion) }
+    it { should     be_able_to(:destroy, @membership) }
+    it { should     be_able_to(:create, new_motion) }
+    it { should     be_able_to(:close, user_motion) }
+    it { should     be_able_to(:create_outcome, user_motion) }
+    it { should     be_able_to(:edit_close_date, user_motion) }
+    it { should     be_able_to(:destroy, user_motion) }
     it { should_not be_able_to(:destroy, other_users_motion) }
     it { should_not be_able_to(:close, other_users_motion) }
     it { should_not be_able_to(:create_outcome, other_users_motion) }
     it { should_not be_able_to(:edit_close_date, other_users_motion) }
 
-    it { should be_able_to(:vote, user_motion) }
-    it { should be_able_to(:vote, other_users_motion) }
+    it { should     be_able_to(:vote, user_motion) }
+    it { should     be_able_to(:vote, other_users_motion) }
     it { should_not be_able_to(:vote, closed_motion) }
-
+    it { should     be_able_to(:cancel, own_invitation) }
+    it { should_not be_able_to(:cancel, other_members_invitation) }
 
     it "cannot remove themselves if they are the only member of the group" do
       group.memberships.where("memberships.id != ?", @membership.id).destroy_all
@@ -85,11 +92,11 @@ describe "User abilities" do
 
     context "group members invitable by members" do
       before { group.update_attributes(:members_invitable_by => 'members') }
-      it { should be_able_to(:add_members, group) }
-      it { should be_able_to(:invite_people, group) }
-      it { should be_able_to(:manage_membership_requests, group) }
-      it { should be_able_to(:approve, membership_request) }
-      it { should be_able_to(:ignore, membership_request) }
+      it { should     be_able_to(:add_members, group) }
+      it { should     be_able_to(:invite_people, group) }
+      it { should     be_able_to(:manage_membership_requests, group) }
+      it { should     be_able_to(:approve, membership_request) }
+      it { should     be_able_to(:ignore, membership_request) }
       it { should_not be_able_to(:destroy, @other_membership) }
     end
 
@@ -104,7 +111,7 @@ describe "User abilities" do
 
     context "that is hidden" do
       before { group.update_attributes(:privacy => 'hidden') }
-      it { should be_able_to(:show, group) }
+      it { should     be_able_to(:show, group) }
 
       context "with hidden subgroup" do
         before do
@@ -115,7 +122,7 @@ describe "User abilities" do
         context "invitable by members" do
           before { subgroup.update_attributes(:members_invitable_by => 'members') }
           it { should_not be_able_to(:invite_outsiders, subgroup) }
-          it { should be_able_to(:invite_people, subgroup) }
+          it { should     be_able_to(:invite_people, subgroup) }
         end
 
         context "invitable by admins only" do
@@ -131,14 +138,14 @@ describe "User abilities" do
 
       context "public subgroup" do
         before { subgroup.update_attributes(:privacy => 'public') }
-        it { should be_able_to(:show, subgroup) }
-        it { should be_able_to(:request_membership, subgroup) }
+        it { should     be_able_to(:show, subgroup) }
+        it { should     be_able_to(:request_membership, subgroup) }
       end
 
       context "private subgroup" do
         before { subgroup.update_attributes(:privacy => 'private') }
-        it { should be_able_to(:show, subgroup) }
-        it { should be_able_to(:request_membership, subgroup) }
+        it { should     be_able_to(:show, subgroup) }
+        it { should     be_able_to(:request_membership, subgroup) }
       end
 
       context "hidden subgroup" do
@@ -149,8 +156,8 @@ describe "User abilities" do
 
       context "hidden subgroup viewable by parent members" do
         before { subgroup.update_attributes(privacy: 'hidden', viewable_by_parent_members: true) }
-        it { should be_able_to(:show, subgroup) }
-        it { should be_able_to(:request_membership, subgroup) }
+        it { should     be_able_to(:show, subgroup) }
+        it { should     be_able_to(:request_membership, subgroup) }
       end
     end
   end
@@ -167,24 +174,26 @@ describe "User abilities" do
       @other_membership = group.add_member! other_user
     end
 
-    it { should be_able_to(:update, group) }
-    it { should be_able_to(:email_members, group) }
-    it { should be_able_to(:hide_next_steps, group) }
-    it { should be_able_to(:view_payment_details, group) }
-    it { should be_able_to(:choose_subscription_plan, group) }
-    it { should be_able_to(:destroy, discussion) }
-    it { should be_able_to(:move, discussion) }
-    it { should be_able_to(:update, discussion) }
-    it { should be_able_to(:make_admin, @other_membership) }
-    it { should be_able_to(:remove_admin, @other_membership) }
-    it { should be_able_to(:destroy, @other_membership) }
-    it { should be_able_to(:edit_description, group) }
+    it { should     be_able_to(:update, group) }
+    it { should     be_able_to(:email_members, group) }
+    it { should     be_able_to(:hide_next_steps, group) }
+    it { should     be_able_to(:view_payment_details, group) }
+    it { should     be_able_to(:choose_subscription_plan, group) }
+    it { should     be_able_to(:destroy, discussion) }
+    it { should     be_able_to(:move, discussion) }
+    it { should     be_able_to(:update, discussion) }
+    it { should     be_able_to(:make_admin, @other_membership) }
+    it { should     be_able_to(:remove_admin, @other_membership) }
+    it { should     be_able_to(:destroy, @other_membership) }
+    it { should     be_able_to(:edit_description, group) }
     it { should_not be_able_to(:update, other_users_motion) }
-    it { should be_able_to(:destroy, other_users_motion) }
-    it { should be_able_to(:close, other_users_motion) }
-    it { should be_able_to(:create_outcome, other_users_motion) }
-    it { should be_able_to(:edit_close_date, other_users_motion) }
-    it { should be_able_to(:destroy, another_user_comment) }
+    it { should     be_able_to(:destroy, other_users_motion) }
+    it { should     be_able_to(:close, other_users_motion) }
+    it { should     be_able_to(:create_outcome, other_users_motion) }
+    it { should     be_able_to(:edit_close_date, other_users_motion) }
+    it { should     be_able_to(:destroy, another_user_comment) }
+    it { should     be_able_to(:cancel, own_invitation) }
+    it { should     be_able_to(:cancel, other_members_invitation) }
 
     it "should not be able to delete the only admin of a group" do
       group.admin_memberships.where("memberships.id != ?", @membership.id).destroy_all
@@ -193,11 +202,11 @@ describe "User abilities" do
 
     context "group members invitable by admins" do
       before { group.update_attributes(:members_invitable_by => 'admins') }
-      it { should be_able_to(:add_members, group) }
-      it { should be_able_to(:invite_people, group) }
-      it { should be_able_to(:manage_membership_requests, group) }
-      it { should be_able_to(:approve, membership_request) }
-      it { should be_able_to(:ignore, membership_request) }
+      it { should     be_able_to(:add_members, group) }
+      it { should     be_able_to(:invite_people, group) }
+      it { should     be_able_to(:manage_membership_requests, group) }
+      it { should     be_able_to(:approve, membership_request) }
+      it { should     be_able_to(:ignore, membership_request) }
     end
 
     context "where group is marked as manual subscription" do
@@ -216,7 +225,7 @@ describe "User abilities" do
     end
     it { should_not be_able_to(:view_payment_details, sub_group) }
     it { should_not be_able_to(:choose_subscription_plan, sub_group) }
-    it { should be_able_to(:invite_outsiders, sub_group) }
+    it { should     be_able_to(:invite_outsiders, sub_group) }
   end
 
   context "non-member of a group" do
@@ -385,7 +394,7 @@ describe "User abilities" do
       before do
         group.add_member!(other_user)
       end
-      it { should be_able_to(:deactivate, other_user) }
+      it { should     be_able_to(:deactivate, other_user) }
     end
 
     context "other_user is the only coordinator of one of their groups" do
