@@ -1,6 +1,5 @@
 class InvitationsController < ApplicationController
   include InvitationsHelper
-  # before_filter :require_current_user_can_invite_people
   before_filter :load_invitable, only: [:new, :create]
   before_filter :ensure_invitations_available, only: [:new, :create]
 
@@ -24,12 +23,11 @@ class InvitationsController < ApplicationController
   end
 
   def new
-    ensure_invitations_available
     @invite_people_form = InvitePeopleForm.new
-    load_decorated_group
   end
 
   def create
+    require_current_user_can_invite_people
     @invite_people_form = InvitePeopleForm.new(params[:invite_people_form])
     MembershipService.add_users_to_group(users: @invite_people_form.members_to_add,
                                          group: @group,
@@ -64,11 +62,6 @@ class InvitationsController < ApplicationController
     end
   end
 
-  def index
-    @pending_invitations = @group.pending_invitations
-    load_decorated_group
-  end
-
   def destroy
     @invitation = Invitation.find_by_token!(params[:id])
 
@@ -98,10 +91,6 @@ class InvitationsController < ApplicationController
     end
   end
 
-  def load_decorated_group
-    @group
-  end
-
   def set_flash_message
     unless @invite_people_form.emails_to_invite.empty?
       invitations_sent = t(:'notice.invitations.sent', count: @invite_people_form.emails_to_invite.size)
@@ -116,12 +105,12 @@ class InvitationsController < ApplicationController
     flash[:notice] = message
   end
 
-  # def require_current_user_can_invite_people
-  #   unless can? :invite_people, group
-  #     flash[:error] = "You are not able to invite people to this group"
-  #     redirect_to group
-  #   end
-  # end
+  def require_current_user_can_invite_people
+    unless can? :invite_people, @group
+      flash[:error] = "You are not able to invite people to this group"
+      redirect_to @invitable
+    end
+  end
 
   def join_or_setup_group_path
     group = @invitation.invitable
