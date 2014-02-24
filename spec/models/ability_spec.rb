@@ -383,6 +383,13 @@ describe "User abilities" do
       it { should_not be_able_to(:show, subgroup) }
       it { should_not be_able_to(:request_membership, subgroup) }
     end
+
+    context "subgroup which is non-hidden" do
+      let(:group) { create :group}
+      let(:subgroup) { create(:group, parent: group, privacy: 'private') }
+
+      it { should be_able_to(:request_membership, subgroup) }
+    end
   end
 
   context "Loomio admin deactivates other_user" do
