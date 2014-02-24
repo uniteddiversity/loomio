@@ -5,7 +5,7 @@ class ManageMembershipRequests
     requestor = membership_request.requestor
     membership_request.approve!(responder)
     if membership_request.from_a_visitor?
-      invitation = Invitation.after_membership_request_approval(
+      invitation = InvitationService.invite_after_membership_request_approval(
                         recipient_email: membership_request.email,
                         inviter: responder,
                         invitable: membership_request.group)
