@@ -10,10 +10,10 @@ describe "User abilities" do
   let(:ability) { Ability.new(user) }
   subject { ability }
 
-  let(:own_invitation) { Invitation.to_join_group(recipient_email: "h@h.com",
+  let(:own_invitation) { InvitationService.invite_to_join_group(recipient_email: "h@h.com",
                                                   invitable: group,
                                                   inviter: user) }
-  let(:other_members_invitation) { Invitation.to_join_group(recipient_email: "h@h.com",
+  let(:other_members_invitation) { InvitationService.invite_to_join_group(recipient_email: "h@h.com",
                                                             invitable: group,
                                                             inviter: other_user) }
   it { should     be_able_to(:create, group) }
@@ -35,6 +35,7 @@ describe "User abilities" do
     let(:closed_motion) { create(:motion, discussion: discussion, closed_at: 1.day.ago) }
 
     before do
+      own_invitation
       @membership = group.add_member!(user)
       @other_membership = group.add_member!(other_user)
     end

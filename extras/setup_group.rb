@@ -12,7 +12,7 @@ class SetupGroup
 
   def self.send_invitation_to_start_group(group)
     inviter = SetupGroup.find_or_create_helper_bot
-    invitation = Invitation.to_start_group(invitable: group,
+    invitation = InvitationService.invite_to_start_group(invitable: group,
                                            inviter: inviter,
                                            recipient_email: group.group_request.admin_email,
                                            recipient_name: group.group_request.admin_name)

@@ -74,7 +74,7 @@ When(/^I follow an invitation link I have already used$/) do
   @user = FactoryGirl.create(:user)
   @coordinator = FactoryGirl.create(:user)
   @group.add_admin!(@coordinator)
-  @invitation = Invitation.to_join_group(invitable: @group,
+  @invitation = InvitationService.invite_to_join_group(invitable: @group,
                                                inviter: @coordinator,
                                                recipient_email: 'jim@jimmy.com')
   AcceptInvitation.and_grant_access!(@invitation, @user)
@@ -93,7 +93,7 @@ When(/^I click an invitation link I have already used$/) do
   @group = FactoryGirl.create(:group)
   @coordinator = FactoryGirl.create(:user)
   @group.add_admin!(@coordinator)
-  @invitation = Invitation.to_join_group(invitable: @group,
+  @invitation = InvitationService.invite_to_join_group(invitable: @group,
                                                inviter: @coordinator,
                                                recipient_email: 'jim@jimmy.com')
   AcceptInvitation.and_grant_access!(@invitation, @user)

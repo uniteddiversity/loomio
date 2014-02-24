@@ -38,9 +38,9 @@ end
 
 Given(/^there is a pending invitation to join the group$/) do
   @group.pending_invitations.first.destroy
-  @invitation = Invitation.to_join_group(invitable: @group,
-                                               inviter: @user,
-                                               recipient_email: 'jim@jimmy.com')
+  @invitation = InvitationService.invite_to_join_group(invitable: @group,
+                                                       inviter: @user,
+                                                       recipient_email: 'jim@jimmy.com')
 end
 
 When(/^I cancel the pending invitation$/) do
@@ -63,9 +63,9 @@ Given(/^there is a cancelled invitation to a group$/) do
   @coordinator = FactoryGirl.create(:user)
   @group = FactoryGirl.create(:group)
   @group.add_admin!(@coordinator)
-  @invitation = Invitation.to_join_group(invitable: @group,
-                                               inviter: @coordinator,
-                                               recipient_email: 'jim@jimmy.com')
+  @invitation = InvitationService.invite_to_join_group(invitable: @group,
+                                                       inviter: @coordinator,
+                                                       recipient_email: 'jim@jimmy.com')
   @invitation.cancel!(canceller: @coordinator)
 end
 

@@ -59,7 +59,7 @@ describe Invitation do
   context 'to_start_a_group' do
 
     before do
-      @invitation = Invitation.to_start_group(
+      @invitation = InvitationService.invite_to_start_group(
         inviter: admin_user,
         recipient_email: 'jon@lemmon.com',
         invitable: group)
@@ -85,7 +85,7 @@ describe Invitation do
   context 'to_join_group' do
 
     before do
-      @invitation = Invitation.to_join_group(
+      @invitation = InvitationService.invite_to_join_group(
         inviter: admin_user,
         recipient_email: 'jon@lemmon.com',
         invitable: group)

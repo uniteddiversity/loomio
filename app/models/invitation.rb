@@ -21,6 +21,7 @@ class Invitation < ActiveRecord::Base
   scope :not_cancelled,  -> { where(cancelled_at: nil) }
   scope :pending, -> { not_cancelled.where(accepted_at: nil) }
 
+
   def recipient_first_name
     recipient_name.split(' ').first
   end
@@ -83,29 +84,6 @@ class Invitation < ActiveRecord::Base
     max_size - memberships_count - pending_invitations.count
   end
 
-  def self.to_start_group(args)
-    args[:to_be_admin] = true
-    args[:intent] = 'start_group'
-    create(args)
-  end
-
-  def self.to_join_group(args)
-    args[:to_be_admin] = false
-    args[:intent] = 'join_group'
-    create(args)
-  end
-
-  def self.to_join_discussion(args)
-    args[:to_be_admin] = false
-    args[:intent] = 'join_discussion'
-    create(args)
-  end
-
-  def self.after_membership_request_approval(args)
-    args[:to_be_admin] = false
-    args[:intent] = 'join_group'
-    Invitation.create(args)
-  end
 
   private
   def ensure_token_is_present
@@ -116,9 +94,7 @@ class Invitation < ActiveRecord::Base
 
   def set_unique_token
     begin
-      token = (('a'..'z').to_a +
-               ('A'..'Z').to_a +
-               (0..9).to_a).sample(20).join
+      token = SecureRandom.hex.slice(0, 20)
     end while self.class.where(:token => token).exists?
     self.token = token
   end
