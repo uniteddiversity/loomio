@@ -41,18 +41,20 @@
       border-top: 4px solid $light-grey;
       opacity: 1;
     }
+    &.left-side { }
   }
   li.nav-item a.nav-logo-link {
-    padding: 6px 8px 1px 0px;
+    padding: 6px 10px 1px 0px;
     display: block;
   }
 
   li.nav-item a.nav-link {
     color: #727272;
     display: block;
-    padding: 12px 10px 8px;
+    padding: 12px 10px 6px;
     line-height: 18px;
   }
+
   li.nav-item a.nav-link:hover{
     color: #999999;
     text-decoration: none;
@@ -198,7 +200,7 @@
 
 }
 
-#inbox-container { margin-top: 0; }
+#inbox-container { margin-top: 1px; }
 
 .toolbar-navigation #contribute a {
   height: 20px;
