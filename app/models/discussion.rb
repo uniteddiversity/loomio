@@ -69,7 +69,7 @@ class Discussion < ActiveRecord::Base
   end
 
   def last_collaborator
-    User.find(@discussion.originator.to_i)
+    User.find_by_id(originator.to_i)
   end
 
   def group_users_without_discussion_author
