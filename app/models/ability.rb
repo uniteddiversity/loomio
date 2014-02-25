@@ -166,7 +166,15 @@ class Ability
       (comment.author == user) or @admin_group_ids.include?(comment.discussion.group_id)
     end
 
-    can [:create, :vote], Motion do |motion|
+    can [:start_proposal], Discussion do |discussion|
+      can? :create, Motion.new(discussion: discussion)
+    end
+
+    can [:create], Motion do |motion|
+      motion.discussion.current_motion.nil? && @member_group_ids.include?(motion.discussion.group_id)
+    end
+
+    can [:vote], Motion do |motion|
       motion.voting? && @member_group_ids.include?(motion.discussion.group_id)
     end
 

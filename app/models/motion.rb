@@ -139,14 +139,14 @@ class Motion < ActiveRecord::Base
   end
 
   def last_vote_by_user(user)
-    votes.where(user_id: user.id).order('created_at DESC').first
+    votes.where(user_id: user.id, age: 0).first
   end
 
   def last_position_by_user(user)
     if vote = last_vote_by_user(user)
       vote.position
     else
-      nil
+      :not_voted
     end
   end
 

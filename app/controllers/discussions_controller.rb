@@ -82,17 +82,21 @@ class DiscussionsController < GroupBaseController
     assign_meta_data
 
     if params[:proposal]
-      @displayed_motion = @discussion.motions.find(params[:proposal])
-    elsif @current_motion
-      @displayed_motion = @current_motion
+      @motion = @discussion.motions.find(params[:proposal])
+    else
+      @motion = @discussion.most_recent_motion
+    end
+
+    if @motion
+      @motion_reader = MotionReader.for(user: current_user_or_visitor, motion: @motion)
     end
 
     @discussion_reader = DiscussionReader.for(user: current_user_or_visitor, discussion: @discussion)
 
+    @closed_motions = @discussion.closed_motions
+
     @uses_markdown = current_user_or_visitor.uses_markdown?
-    if @current_motion
-      @motion_reader = MotionReader.for(user: current_user_or_visitor, motion: @current_motion)
-    end
+
     @activity = @discussion.activity.page(requested_or_first_unread_page).per(Discussion::PER_PAGE)
   end
 

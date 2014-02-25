@@ -1,4 +1,14 @@
 module VotesHelper
+  def vote_button(motion: nil, position: nil)
+    position_key = "#{position}_position"
+    link_to image_tag("hand-#{position}.png", title: t(position_key), alt: t(position_key)),
+            new_motion_vote_path(motion_id: motion.id, position: position),
+            "title" => t(position_key),
+            "data-content" => t("#{position}_details"),
+            class: "position btn vote-#{position}",
+            id: "#{position}-vote"
+  end
+
   def vote_submit_button_text
     if action_name == 'new'
       return t("vote_form.submit")
