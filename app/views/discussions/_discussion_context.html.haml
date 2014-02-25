@@ -11,7 +11,7 @@
           who: @discussion.author.name,
           link: user_path(@discussion.author),
           link_class: 'user-name')
-      -if @discussion.last_collaborator.present?
+      -if @discussion.versions.size > 1
         - last_collaborator = @discussion.last_collaborator
         .last-edited-by
           = t("discussion_context.last_edited_html",

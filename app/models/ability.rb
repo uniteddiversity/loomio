@@ -178,6 +178,11 @@ class Ability
       motion.voting? && @member_group_ids.include?(motion.discussion.group_id)
     end
 
+    can [:close], Motion do |motion|
+      motion.voting? && (motion.author_id = user.id ||
+                         @admin_group_ids.include?(motion.discussion.group_id))
+    end
+
     can [:destroy,
          :close,
          :create_outcome,
