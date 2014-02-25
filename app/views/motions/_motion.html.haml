@@ -58,10 +58,8 @@
     - unless motion.user_has_voted? current_user
       %h3= t :state_your_position
       .vote-buttons.clearfix
-        = vote_button(motion: motion, position: 'yes')
-        = vote_button(motion: motion, position: 'abstain')
-        = vote_button(motion: motion, position: 'no')
-        = vote_button(motion: motion, position: 'block')
+        - Vote::POSITIONS.each do |position|
+          = render 'motions/vote_button', motion: motion, position: position
 
     .votes-table
       %h3= t :positions

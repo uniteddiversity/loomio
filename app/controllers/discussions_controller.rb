@@ -74,12 +74,7 @@ class DiscussionsController < GroupBaseController
   end
 
   def show
-    if @discussion.has_previous_versions?
-      @last_collaborator = User.find(@discussion.originator.to_i)
-    end
     @group = GroupDecorator.new(@discussion.group)
-    @current_motion = @discussion.current_motion
-    assign_meta_data
 
     if params[:proposal]
       @motion = @discussion.motions.find(params[:proposal])
@@ -98,6 +93,7 @@ class DiscussionsController < GroupBaseController
     @uses_markdown = current_user_or_visitor.uses_markdown?
 
     @activity = @discussion.activity.page(requested_or_first_unread_page).per(Discussion::PER_PAGE)
+    assign_meta_data
   end
 
   def move

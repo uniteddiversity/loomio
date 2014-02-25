@@ -146,7 +146,7 @@ class Motion < ActiveRecord::Base
     if vote = last_vote_by_user(user)
       vote.position
     else
-      :not_voted
+      'unvoted'
     end
   end
 
