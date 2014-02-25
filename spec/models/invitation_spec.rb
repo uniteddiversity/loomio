@@ -59,10 +59,10 @@ describe Invitation do
   context 'to_start_a_group' do
 
     before do
-      @invitation = InvitationService.invite_to_start_group(
+      @invitation = InvitationService.create_invite_to_start_group(
         inviter: admin_user,
         recipient_email: 'jon@lemmon.com',
-        invitable: group)
+        group: group)
     end
 
     it 'has a unique token' do
@@ -85,10 +85,10 @@ describe Invitation do
   context 'to_join_group' do
 
     before do
-      @invitation = InvitationService.invite_to_join_group(
+      @invitation = InvitationService.create_invite_to_join_group(
         inviter: admin_user,
         recipient_email: 'jon@lemmon.com',
-        invitable: group)
+        group: group)
     end
     it 'has a unique token' do
       @invitation.token.length.should > 10

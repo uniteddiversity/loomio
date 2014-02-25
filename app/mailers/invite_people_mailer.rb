@@ -18,6 +18,8 @@ class InvitePeopleMailer < BaseMailer
 
   def to_join_discussion(invitation, sender, message_body)
     @invitation = invitation
+    @discussion = invitation.invitable
+    @inviter = invitation.inviter
     @message_body = message_body
     mail to: invitation.recipient_email,
          from: "#{sender.name} <notifications@loomio.org>",
@@ -27,7 +29,7 @@ class InvitePeopleMailer < BaseMailer
 
   def after_membership_request_approval(invitation, sender_email, message_body)
     @invitation = invitation
-    @group = @invitation.invitable
+    @group = @invitation.group
     @message_body = message_body
     mail to: invitation.recipient_email,
          from: 'Loomio <contact@loomio.org>',

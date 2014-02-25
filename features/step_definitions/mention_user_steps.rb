@@ -1,6 +1,6 @@
 Given(/^"(.*?)" has been invited to the group but has not accepted$/) do |recipient_email|
   args = { recipient_email: recipient_email, inviter: @user, invitable: @group }
-  InvitationService.invite_to_join_group(args)
+  InvitationService.create_invite_to_join_group(args)
 end
 
 Then(/^I should not see "(.*?)" in the menu that pops up$/) do |recipient_email|

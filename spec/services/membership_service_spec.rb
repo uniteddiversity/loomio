@@ -16,6 +16,7 @@ describe 'MembershipService' do
   describe 'add_users_to_group' do
 
     before do
+      MembershipService::UserMailer.stub(:delay, :added_to_discussion).with(user, inviter, discussion, message)
       Events::UserAddedToGroup.stub(:publish!).with(membership, inviter)
       group.stub(:add_members!).with(users, inviter).and_return([membership])
     end

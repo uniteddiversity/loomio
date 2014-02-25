@@ -36,7 +36,7 @@ Given(/^I am invited to join a group$/) do
   @group = FactoryGirl.create(:group)
   @group.add_admin! @group_admin
   @invite_people_form = InvitePeopleForm.new(recipients: ['jim@jam.com'], message_body: 'please click the invitation link below')
-  InvitationService.email_invitations(recipient_emails: @invite_people_form.recipients, message: @invite_people_form.message_body, invitable: @group, inviter: @group_admin)
+  InvitationService.invite_to_group(recipient_emails: @invite_people_form.recipients, message: @invite_people_form.message_body, group: @group, inviter: @group_admin)
 end
 
 When(/^I accept my invitation via email$/) do
@@ -62,7 +62,7 @@ end
 Given(/^I am invited at "(.*?)" to join a group$/) do |arg1|
   @group = FactoryGirl.create(:group)
   @invite_people_form = InvitePeopleForm.new(recipients: [arg1], message_body: 'please click the invitation link below')
-  InvitationService.email_invitations(recipient_emails: @invite_people_form.recipients, message: @invite_people_form.message_body, invitable: @group, inviter: @group.admins.first)
+  InvitationService.invite_to_group(recipient_emails: @invite_people_form.recipients, message: @invite_people_form.message_body, group: @group, inviter: @group.admins.first)
 end
 
 Then(/^I should be a member of the group$/) do
@@ -74,9 +74,9 @@ When(/^I follow an invitation link I have already used$/) do
   @user = FactoryGirl.create(:user)
   @coordinator = FactoryGirl.create(:user)
   @group.add_admin!(@coordinator)
-  @invitation = InvitationService.invite_to_join_group(invitable: @group,
-                                               inviter: @coordinator,
-                                               recipient_email: 'jim@jimmy.com')
+  @invitation = InvitationService.create_invite_to_join_group(group: @group,
+                                                              inviter: @coordinator,
+                                                              recipient_email: 'jim@jimmy.com')
   AcceptInvitation.and_grant_access!(@invitation, @user)
   visit invitation_path(@invitation)
 end
@@ -93,9 +93,9 @@ When(/^I click an invitation link I have already used$/) do
   @group = FactoryGirl.create(:group)
   @coordinator = FactoryGirl.create(:user)
   @group.add_admin!(@coordinator)
-  @invitation = InvitationService.invite_to_join_group(invitable: @group,
-                                               inviter: @coordinator,
-                                               recipient_email: 'jim@jimmy.com')
+  @invitation = InvitationService.create_invite_to_join_group(group: @group,
+                                                              inviter: @coordinator,
+                                                              recipient_email: 'jim@jimmy.com')
   AcceptInvitation.and_grant_access!(@invitation, @user)
   visit invitation_path(@invitation)
 end
@@ -261,7 +261,7 @@ Given(/^I am invited to join a discussion$/) do
   @group.add_admin! @group_admin
   @discussion = create_discussion group: @group, author: @group_admin
   @invite_people_form = InvitePeopleForm.new(recipients: ['jim@jam.com'], message_body: 'please click the invitation link below')
-  InvitationService.email_invitations(recipient_emails: @invite_people_form.recipients, message: @invite_people_form.message_body, invitable: @discussion, inviter: @group_admin)
+  InvitationService.invite_to_discussion(recipient_emails: @invite_people_form.recipients, message: @invite_people_form.message_body, discussion: @discussion, inviter: @group_admin)
 end
 
 Then(/^I should be redirected to the discussion page$/) do

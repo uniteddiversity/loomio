@@ -29,13 +29,29 @@ class InvitationsController < ApplicationController
   def create
     require_current_user_can_invite_people
     @invite_people_form = InvitePeopleForm.new(params[:invite_people_form])
-    MembershipService.add_users_to_group(users: @invite_people_form.members_to_add,
-                                         group: @group,
-                                         inviter: current_user)
-    InvitationService.email_invitations(recipient_emails: @invite_people_form.emails_to_invite,
+
+    if @invitable.kind_of?(Group)
+      MembershipService.add_users_to_group(users: @invite_people_form.members_to_add,
+                                           group: @group,
+                                           inviter: current_user,
+                                           message: @invite_people_form.message_body)
+
+      InvitationService.invite_to_group(recipient_emails: @invite_people_form.emails_to_invite,
                                         message: @invite_people_form.message_body,
-                                        invitable: @invitable,
+                                        group: @invitable,
                                         inviter: current_user)
+
+    elsif @invitable.kind_of?(Discussion)
+      MembershipService.add_users_to_discussion(users: @invite_people_form.members_to_add,
+                                                discussion: @invitable,
+                                                inviter: current_user,
+                                                message: @invite_people_form.message_body)
+
+      InvitationService.invite_to_discussion(recipient_emails: @invite_people_form.emails_to_invite,
+                                             message: @invite_people_form.message_body,
+                                             discussion: @invitable,
+                                             inviter: current_user)
+    end
 
     set_flash_message
     redirect_to @invitable

@@ -10,12 +10,12 @@ describe "User abilities" do
   let(:ability) { Ability.new(user) }
   subject { ability }
 
-  let(:own_invitation) { InvitationService.invite_to_join_group(recipient_email: "h@h.com",
-                                                  invitable: group,
-                                                  inviter: user) }
-  let(:other_members_invitation) { InvitationService.invite_to_join_group(recipient_email: "h@h.com",
-                                                            invitable: group,
-                                                            inviter: other_user) }
+  let(:own_invitation) { InvitationService.create_invite_to_join_group(recipient_email: "h@h.com",
+                                                                       group: group,
+                                                                       inviter: user) }
+  let(:other_members_invitation) { InvitationService.create_invite_to_join_group(recipient_email: "h@h.com",
+                                                                                 group: group,
+                                                                                 inviter: other_user) }
   it { should     be_able_to(:create, group) }
 
   context "member of a group" do
