@@ -139,6 +139,8 @@ class Motion < ActiveRecord::Base
   end
 
   def last_vote_by_user(user)
+    return nil if user.nil? || user.is_logged_out?
+
     votes.where(user_id: user.id, age: 0).first
   end
 
