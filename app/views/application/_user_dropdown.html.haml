@@ -16,6 +16,10 @@
         / = t(:email_preferences)
         Emails
     %li
+      %a{href: help_path}
+        %i.fa.fa-star
+        %span= t :"help.help"
+    %li
       %a{href: destroy_user_session_path, method: :delete}
         %i.fa.fa-sign-out
         = t(:sign_out)
