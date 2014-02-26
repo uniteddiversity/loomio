@@ -17,6 +17,10 @@
     background-color: #08c;
     text-decoration: none;
   }
+  h3 {
+    font-weight: 400;
+    line-height: 22px;
+  }
 }
 
 .main-container {
@@ -45,14 +49,14 @@
     &.left-side { }
   }
   li.nav-item a.nav-logo-link {
-    padding: 6px 10px 1px 0px;
+    padding: 7px 10px 1px 0px;
     display: block;
   }
 
   li.nav-item a.nav-link {
     color: #727272;
     display: block;
-    padding: 12px 10px 6px;
+    padding: 13px 10px 6px;
     line-height: 18px;
     &:focus { text-decoration: none; }
   }
