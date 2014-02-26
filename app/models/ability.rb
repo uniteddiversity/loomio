@@ -178,17 +178,14 @@ class Ability
       motion.voting? && @member_group_ids.include?(motion.discussion.group_id)
     end
 
-    can [:close], Motion do |motion|
-      motion.voting? && (motion.author_id = user.id ||
-                         @admin_group_ids.include?(motion.discussion.group_id))
+    can [:close, :edit_close_date], Motion do |motion|
+      motion.voting? && ((motion.author_id == user.id) || @admin_group_ids.include?(motion.discussion.group_id))
     end
 
     can [:destroy,
-         :close,
          :create_outcome,
-         :update_outcome,
-         :edit_close_date], Motion do |motion|
-      (motion.author == user) or @admin_group_ids.include?(motion.group.id)
+         :update_outcome], Motion do |motion|
+      (motion.author_id == user.id) or @admin_group_ids.include?(motion.discussion.group_id)
     end
   end
 end

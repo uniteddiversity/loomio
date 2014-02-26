@@ -29,6 +29,7 @@
                     "data-toggle" => "modal",
                     class: 'btn btn-small',
                     id: 'change-close-date'
+          = render 'motions/edit_close_date', motion: motion
 
   -if motion.closed?
     .row
