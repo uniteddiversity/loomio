@@ -114,6 +114,11 @@
           line-height: 18px;
           height: 18px;
           margin-top: 0;
+          @include box-shadow(-1px, 1px, 1px, 0, rgba(0, 0, 0, 0.075) inset);
+          &:focus {
+            border-color: #ccc;
+            @include box-shadow(0, 1px, 1px, 0, rgba(0,0,0,.07) inset);
+          }
         }
       }
       .input-prepend {
