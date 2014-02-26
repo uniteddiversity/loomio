@@ -43,7 +43,7 @@ class InvitationsController < ApplicationController
 
     elsif @invitable.kind_of?(Discussion)
       MembershipService.add_users_to_discussion(users: @invite_people_form.members_to_add,
-                                                discussion: @invitable,
+                                                discussion: @discussion,
                                                 inviter: current_user,
                                                 message: @invite_people_form.message_body)
 

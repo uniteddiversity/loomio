@@ -821,12 +821,18 @@ en:
   #
 
   email:
+    to_join_discussion:
+      subject: "%{who} wants you to join a discussion on Loomio"
+      content: "You've been invited to participate in the discussion: %{discussion}"
+      message_intro: "%{who} says:"
+      link: "Join the discussion"
+    to_join_group:
+      subject: "%{member} has invited you to join %{group_name} on Loomio"
+    to_start_group:
+      subject: "Set up your new Loomio group: %{group_name}"
     user_added_to_a_group:
       subject: "%{who} has added you to %{which_group}"
       content: "%{who} has added you to %{which_group} on Loomio. Click here to go to the group:"
-    user_added_to_discussion:
-      subject: "%{who} has added invited you to participate in a discussion."
-      content: "%{who} has added invited you to participate in a discussion."
     unsubscribe: "Unsubscribe or change your email preferences:"
     unsubscribe_html: "<a href='%{link_path}'>%{link_text}</a> to unsubscribe or change your email preferences."
     view_comment: "Click here to view the comment on Loomio"
@@ -885,12 +891,6 @@ en:
       closing_in_24_hours: "Closing in 24 hours"
       headline: "%{author}'s proposal in %{group} is closing soon:"
       summary: "Summary"
-    to_join_discussion:
-      subject: "%{member} has invited you to participate in a discussion on Loomio"
-    to_join_group:
-      subject: "%{member} has invited you to join %{group_name} on Loomio"
-    to_start_group:
-      subject: "Set up your new Loomio group: %{group_name}"
     verification:
       header: "You're almost done!"
       intro: "Please click this verification link to finalise your request:"

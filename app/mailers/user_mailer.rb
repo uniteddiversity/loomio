@@ -66,13 +66,13 @@ class UserMailer < BaseMailer
   def added_to_discussion(user: nil, inviter: nil, discussion: nil, message: nil)
     @user = user
     @inviter = inviter
-    @group = group
+    @discussion = discussion
     @message = message
     locale = best_locale(user.language_preference, inviter.language_preference)
     I18n.with_locale(locale) do
       mail to: user.email,
            reply_to: inviter.name_and_email,
-           subject: t("email.user_added_to_discussion.subject", who: inviter.name)
+           subject: t("email.to_join_discussion.subject", who: inviter.name)
     end
   end
 end
