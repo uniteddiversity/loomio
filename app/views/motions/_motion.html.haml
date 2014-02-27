@@ -57,7 +57,7 @@
           denominator:  motion.group_size_when_voting
 
   .votes
-    - unless motion.user_has_voted? current_user
+    - if motion.voting? && motion.user_has_not_voted?(current_user)
       %h3= t :state_your_position
       .vote-buttons.clearfix
         - Vote::POSITIONS.each do |position|
